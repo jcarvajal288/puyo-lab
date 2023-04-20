@@ -1,3 +1,4 @@
 img/ 
 src/venv/
 *.swp
+__pycache__/  

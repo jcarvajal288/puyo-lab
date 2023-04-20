@@ -1,4 +1,5 @@
 import pygame
+from sprites import Sprites
 
 class GameState():
     def __init__(self, pygame):
@@ -7,32 +8,9 @@ class GameState():
         self.isRunning = True
 
 
-class PuyoSprites():
-    _spritesheet_filename = "../img/chalkpuyo_sprites.png"
-    _redPuyoRect = (192, 319, 64, 64)
-
-    def __init__(self, pygame):
-        try:
-            self._spritesheet = pygame.image.load(self._spritesheet_filename).convert_alpha()
-        except pygame.error as e:
-            print(f"Unable to load spritesheet image: {self._spritesheet_filename}")
-            raise SystemExit(e)
-        self.redPuyo = self.image_at(self._redPuyoRect)
-    
-    def image_at(self, rectangle, colorkey=None):
-        rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size, pygame.SRCALPHA)
-        image.blit(self._spritesheet, (0, 0), rect)
-        if colorkey is not None:
-            if colorkey == -1:
-                colorkey = image.get_at((0,0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
-        return image
-
-
 def gameLoop(pygame, gameState):
     background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
-    puyoSprites = PuyoSprites(pygame)
+    puyoSprites = Sprites(pygame)
 
     while gameState.isRunning:
         # poll for events

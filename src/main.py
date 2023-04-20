@@ -2,28 +2,40 @@ import pygame
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
-clock = pygame.time.Clock()
-running = True
 
 background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
 
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+class GameState():
+    def __init__(self):
+        self.screen = pygame.display.set_mode((800, 600))
+        self.clock = pygame.time.Clock()
+        self.isRunning = True
 
-    # fill the screen with a color to wipe away anything from last frame
-    screen.fill("black")
-    screen.blit(background_image, (0, 0))
+def gameLoop(gameState):
+    while gameState.isRunning:
+        # poll for events
+        # pygame.QUIT event means the user clicked X to close your window
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                gameState.isRunning = False
 
-    # RENDER YOUR GAME HERE
+        # fill the screen with a color to wipe away anything from last frame
+        gameState.screen.fill("black")
+        gameState.screen.blit(background_image, (0, 0))
 
-    # flip() the display to put your work on screen
-    pygame.display.flip()
+        # RENDER YOUR GAME HERE
 
-    clock.tick(60)  # limits FPS to 60
+        # flip() the display to put your work on screen
+        pygame.display.flip()
 
-pygame.quit()
+        gameState.clock.tick(60)  # limits FPS to 60
+
+
+def main():
+    gameState = GameState()
+    gameLoop(gameState)
+    pygame.quit()
+
+
+if __name__ == '__main__':
+    main()

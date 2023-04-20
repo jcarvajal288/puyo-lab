@@ -1,19 +1,17 @@
 import pygame
 
-# pygame setup
-pygame.init()
-
 class GameState():
-    def __init__(self):
+    def __init__(self, pygame):
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.isRunning = True
+
 
 class PuyoSprites():
     _spritesheet_filename = "../img/chalkpuyo_sprites.png"
     _redPuyoRect = (192, 319, 64, 64)
 
-    def __init__(self):
+    def __init__(self, pygame):
         try:
             self._spritesheet = pygame.image.load(self._spritesheet_filename).convert_alpha()
         except pygame.error as e:
@@ -32,9 +30,9 @@ class PuyoSprites():
         return image
 
 
-def gameLoop(gameState):
+def gameLoop(pygame, gameState):
     background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
-    puyoSprites = PuyoSprites()
+    puyoSprites = PuyoSprites(pygame)
 
     while gameState.isRunning:
         # poll for events
@@ -55,10 +53,10 @@ def gameLoop(gameState):
 
         gameState.clock.tick(60)  # limits FPS to 60
 
-
 def main():
-    gameState = GameState()
-    gameLoop(gameState)
+    pygame.init()
+    gameState = GameState(pygame)
+    gameLoop(pygame, gameState)
     pygame.quit()
 
 

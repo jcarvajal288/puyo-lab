@@ -1,4 +1,5 @@
 import pygame
+from gameboard import Gameboard
 from sprites import Sprites
 
 class GameState():
@@ -11,6 +12,7 @@ class GameState():
 def gameLoop(pygame, gameState):
     background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
     puyoSprites = Sprites(pygame)
+    gameboard = Gameboard((0,0), 32)
 
     while gameState.isRunning:
         # poll for events
@@ -20,11 +22,11 @@ def gameLoop(pygame, gameState):
                 gameState.isRunning = False
 
         # fill the screen with a color to wipe away anything from last frame
-        gameState.screen.fill("purple")
+        gameState.screen.fill("black")
         gameState.screen.blit(background_image, (0, 0))
 
         # RENDER YOUR GAME HERE
-        gameState.screen.blit(puyoSprites.redPuyo, (0, 0))
+        gameState.screen.blit(puyoSprites.redPuyo, gameboard.grid(2, 4))
 
         # flip() the display to put your work on screen
         pygame.display.flip()

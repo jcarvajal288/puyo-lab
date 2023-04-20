@@ -8,8 +8,9 @@ class Gameboard():
         self.origin_x, self.origin_y = origin
         self.tile_size = tile_size
 
-    def grid(self, x, y):
+    def grid(self, coord):
         """
         Converts from grid coordinates (0,1 or 2,4) to pixel coordinates (0,32) or (64, 128)
         """
+        x, y = coord
         return (self.origin_x + (x * self.tile_size), self.origin_y + (y * self.tile_size))

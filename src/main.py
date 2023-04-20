@@ -1,4 +1,6 @@
 import pygame
+import event
+from event import handle_input
 from gameboard import Gameboard
 from sprites import Sprites
 
@@ -7,6 +9,15 @@ class GameState():
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.isRunning = True
+        self.falling_pair_location = (2, 0)
+
+    def movePair(self, evnt):
+        x, y = self.falling_pair_location
+        if   evnt == event.INPUT_UP:    y -= 1
+        elif evnt == event.INPUT_DOWN:  y += 1
+        elif evnt == event.INPUT_LEFT:  x -= 1
+        elif evnt == event.INPUT_RIGHT: x += 1
+        self.falling_pair_location = (x, y)
 
 
 def gameLoop(pygame, gameState):
@@ -15,18 +26,14 @@ def gameLoop(pygame, gameState):
     gameboard = Gameboard((0,0), 32)
 
     while gameState.isRunning:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                gameState.isRunning = False
+        handle_input(pygame, gameState)
 
         # fill the screen with a color to wipe away anything from last frame
         gameState.screen.fill("black")
         gameState.screen.blit(background_image, (0, 0))
 
         # RENDER YOUR GAME HERE
-        gameState.screen.blit(puyoSprites.redPuyo, gameboard.grid(2, 4))
+        gameState.screen.blit(puyoSprites.redPuyo, gameboard.grid(gameState.falling_pair_location))
 
         # flip() the display to put your work on screen
         pygame.display.flip()

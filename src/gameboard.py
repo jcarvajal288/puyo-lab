@@ -7,6 +7,8 @@ class Gameboard():
     def __init__(self, origin, tile_size):
         self.origin_x, self.origin_y = origin
         self.tile_size = tile_size
+        self.width = 6
+        self.height = 12
 
     def grid(self, coord):
         """

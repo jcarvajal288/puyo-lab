@@ -19,6 +19,12 @@ class GameState():
         elif evnt == event.INPUT_RIGHT: x += 1
         self.falling_pair_location = (x, y)
 
+    def handle_event(self, evnt):
+        if evnt == event.EVENT_QUIT:
+            self.isRunning = False
+        elif event.is_movement_event(evnt):
+            self.movePair(evnt)
+
 
 def gameLoop(pygame, gameState, eventHandler):
     background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
@@ -26,7 +32,7 @@ def gameLoop(pygame, gameState, eventHandler):
     gameboard = Gameboard((0,0), 32)
 
     while gameState.isRunning:
-        eventHandler.handle_input(gameState)
+        gameState.handle_event(eventHandler.get_input())
 
         # fill the screen with a color to wipe away anything from last frame
         gameState.screen.fill("black")

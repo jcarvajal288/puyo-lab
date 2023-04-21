@@ -1,7 +1,8 @@
-INPUT_UP = 0
-INPUT_DOWN = 1
-INPUT_LEFT = 2
-INPUT_RIGHT = 3
+EVENT_QUIT = 0
+INPUT_UP = 1
+INPUT_DOWN = 2
+INPUT_LEFT = 3
+INPUT_RIGHT = 4
 
 class EventHandler():
     def __init__(self, pygame):
@@ -10,20 +11,16 @@ class EventHandler():
         self._pygame = pygame
         self._pygame.key.set_repeat(REPEAT_DELAY_MS, REPEAT_INTERVAL_MS)
 
-    def is_movement_event(self, event):
-        return event in {INPUT_UP, INPUT_DOWN, INPUT_LEFT, INPUT_RIGHT}
-
-    def poll_for_input(self, gameState):
+    def get_input(self):
         for event in self._pygame.event.get():
             if event.type == self._pygame.QUIT: # pygame.QUIT event means the user clicked X to close your window
-                gameState.isRunning = False
+                return EVENT_QUIT
             elif event.type == self._pygame.KEYDOWN:
                 if   event.key == self._pygame.K_UP:    return INPUT_UP
                 elif event.key == self._pygame.K_DOWN:  return INPUT_DOWN
                 elif event.key == self._pygame.K_LEFT:  return INPUT_LEFT
                 elif event.key == self._pygame.K_RIGHT: return INPUT_RIGHT
 
-    def handle_input(self, gameState):
-        event = self.poll_for_input(gameState)
-        if self.is_movement_event(event):
-            gameState.movePair(event)
+def is_movement_event(event):
+    return event in {INPUT_UP, INPUT_DOWN, INPUT_LEFT, INPUT_RIGHT}
+

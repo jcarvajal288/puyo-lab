@@ -1,6 +1,7 @@
 import pygame
 import event
 from event import EventHandler
+import gameboard
 from gameboard import Gameboard
 from sprites import Sprites
 
@@ -13,10 +14,21 @@ class GameState():
 
     def movePair(self, evnt):
         x, y = self.falling_pair_location
+
         if   evnt == event.INPUT_UP:    y -= 1
         elif evnt == event.INPUT_DOWN:  y += 1
         elif evnt == event.INPUT_LEFT:  x -= 1
         elif evnt == event.INPUT_RIGHT: x += 1
+
+        if x < 0: 
+            x = 0
+        elif x >= gameboard.BOARD_WIDTH: 
+            x = gameboard.BOARD_WIDTH - 1
+        if y < 0: 
+            y = 0
+        elif y >= gameboard.BOARD_HEIGHT: 
+            y = gameboard.BOARD_HEIGHT - 1
+
         self.falling_pair_location = (x, y)
 
     def handle_event(self, evnt):

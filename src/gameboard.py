@@ -1,3 +1,6 @@
+BOARD_WIDTH = 6
+BOARD_HEIGHT = 12
+
 class Gameboard():
     """
     Abstraction of the PuyoPuyo gameboard: a 6x12 grid where each cell is $tile_size
@@ -7,8 +10,6 @@ class Gameboard():
     def __init__(self, origin, tile_size):
         self.origin_x, self.origin_y = origin
         self.tile_size = tile_size
-        self.width = 6
-        self.height = 12
 
     def grid(self, coord):
         """

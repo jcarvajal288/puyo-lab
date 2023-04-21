@@ -3,6 +3,7 @@ import event
 from event import EventHandler
 import gameboard
 from gameboard import Gameboard
+from playfield import Playfield
 from sprites import Sprites
 
 class GameState():
@@ -39,16 +40,14 @@ class GameState():
 
 
 def gameLoop(pygame, gameState, eventHandler):
-    background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
     puyoSprites = Sprites(pygame)
     gameboard = Gameboard((0,0), 32)
+    playfield = Playfield(pygame)
 
     while gameState.isRunning:
         gameState.handle_event(eventHandler.get_input())
 
-        # fill the screen with a color to wipe away anything from last frame
-        gameState.screen.fill("black")
-        gameState.screen.blit(background_image, (0, 0))
+        playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
         gameState.screen.blit(puyoSprites.redPuyo, gameboard.grid(gameState.falling_pair_location))

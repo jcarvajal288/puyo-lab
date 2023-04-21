@@ -1,5 +1,8 @@
-BOARD_WIDTH = 6
-BOARD_HEIGHT = 12
+TILE_SIZE = 32
+BOARD_TILE_WIDTH = 6
+BOARD_TILE_HEIGHT = 12
+BOARD_PIXEL_WIDTH = BOARD_TILE_WIDTH * TILE_SIZE
+BOARD_PIXEL_HEIGHT = BOARD_TILE_HEIGHT * TILE_SIZE
 
 class Gameboard():
     """
@@ -7,13 +10,13 @@ class Gameboard():
     pixels wide and tall.  The origin is the top left corner.  This class handles
     the conversion from grid coordinates (e.g. [2,4]) to pixel coordinates (e.g. [64, 128])
     """
-    def __init__(self, origin, tile_size):
-        self.origin_x, self.origin_y = origin
-        self.tile_size = tile_size
+    def __init__(self, origin):
+        self.origin = origin
 
     def grid(self, coord):
         """
         Converts from grid coordinates (0,1 or 2,4) to pixel coordinates (0,32) or (64, 128)
         """
         x, y = coord
-        return (self.origin_x + (x * self.tile_size), self.origin_y + (y * self.tile_size))
+        origin_x, origin_y = self.origin
+        return (origin_x + (x * TILE_SIZE), origin_y + (y * TILE_SIZE))

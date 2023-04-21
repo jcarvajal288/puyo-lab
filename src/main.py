@@ -11,7 +11,7 @@ class GameState():
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.isRunning = True
-        self.falling_pair_location = (2, 0)
+        self.falling_pair_location = (0, 0)
 
     def movePair(self, evnt):
         x, y = self.falling_pair_location
@@ -23,12 +23,12 @@ class GameState():
 
         if x < 0: 
             x = 0
-        elif x >= gameboard.BOARD_WIDTH: 
-            x = gameboard.BOARD_WIDTH - 1
+        elif x >= gameboard.BOARD_TILE_WIDTH: 
+            x = gameboard.BOARD_TILE_WIDTH - 1
         if y < 0: 
             y = 0
-        elif y >= gameboard.BOARD_HEIGHT: 
-            y = gameboard.BOARD_HEIGHT - 1
+        elif y >= gameboard.BOARD_TILE_HEIGHT: 
+            y = gameboard.BOARD_TILE_HEIGHT - 1
 
         self.falling_pair_location = (x, y)
 
@@ -41,8 +41,8 @@ class GameState():
 
 def gameLoop(pygame, gameState, eventHandler):
     puyoSprites = Sprites(pygame)
-    gameboard = Gameboard((0,0), 32)
-    playfield = Playfield(pygame)
+    gameboard = Gameboard((100,100))
+    playfield = Playfield(pygame, gameboard)
 
     while gameState.isRunning:
         gameState.handle_event(eventHandler.get_input())

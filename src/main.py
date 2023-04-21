@@ -1,6 +1,6 @@
 import pygame
 import event
-from event import handle_input
+from event import EventHandler
 from gameboard import Gameboard
 from sprites import Sprites
 
@@ -20,13 +20,13 @@ class GameState():
         self.falling_pair_location = (x, y)
 
 
-def gameLoop(pygame, gameState):
+def gameLoop(pygame, gameState, eventHandler):
     background_image = pygame.image.load("../img/chalkboard_800x600.jpg")
     puyoSprites = Sprites(pygame)
     gameboard = Gameboard((0,0), 32)
 
     while gameState.isRunning:
-        handle_input(pygame, gameState)
+        eventHandler.handle_input(pygame, gameState)
 
         # fill the screen with a color to wipe away anything from last frame
         gameState.screen.fill("black")
@@ -43,7 +43,8 @@ def gameLoop(pygame, gameState):
 def main():
     pygame.init()
     gameState = GameState(pygame)
-    gameLoop(pygame, gameState)
+    eventHandler = EventHandler()
+    gameLoop(pygame, gameState, eventHandler)
     pygame.quit()
 
 

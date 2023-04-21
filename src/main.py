@@ -26,7 +26,7 @@ def gameLoop(pygame, gameState, eventHandler):
     gameboard = Gameboard((0,0), 32)
 
     while gameState.isRunning:
-        eventHandler.handle_input(pygame, gameState)
+        eventHandler.handle_input(gameState)
 
         # fill the screen with a color to wipe away anything from last frame
         gameState.screen.fill("black")
@@ -43,7 +43,7 @@ def gameLoop(pygame, gameState, eventHandler):
 def main():
     pygame.init()
     gameState = GameState(pygame)
-    eventHandler = EventHandler()
+    eventHandler = EventHandler(pygame)
     gameLoop(pygame, gameState, eventHandler)
     pygame.quit()
 

@@ -50,7 +50,7 @@ def gameLoop(pygame, gameState, eventHandler):
         playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
-        gameState.screen.blit(puyoSprites.redPuyo, gameboard.grid(gameState.falling_pair_location))
+        gameState.screen.blit(puyoSprites.red_puyo(), gameboard.grid(gameState.falling_pair_location))
 
         # flip() the display to put your work on screen
         pygame.display.flip()

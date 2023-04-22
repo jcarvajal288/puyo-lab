@@ -21,7 +21,7 @@ class GameState():
         self.falling_pair_type = 'ry'
         self.falling_pair_location = ((2, 0), (2, -1))
 
-    def movePair(self, evnt):
+    def move_pair(self, evnt):
         (x, y), (a, b) = self.falling_pair_location
 
         if   evnt == event.INPUT_UP:    y -= 1; b -= 1
@@ -32,11 +32,35 @@ class GameState():
         if is_move_legal(x, y, a, b):
             self.falling_pair_location = ((x, y), (a, b))
 
+    def rotate_clockwise(self):
+        (x, y), (a, b) = self.falling_pair_location
+        if x == a:
+            if b < y: a += 1; b += 1
+            else: a -= 1; b -= 1        
+        elif y == b:
+            if a < x: b -= 1; a += 1
+            else: b += 1; a -= 1
+        self.falling_pair_location = ((x, y), (a, b))
+
+    def rotate_counter_clockwise(self):
+        (x, y), (a, b) = self.falling_pair_location
+        if x == a:
+            if b < y: a -= 1; b += 1
+            else: a += 1; b -= 1        
+        elif y == b:
+            if a < x: a += 1; b += 1
+            else: a -= 1; b -= 1
+        self.falling_pair_location = ((x, y), (a, b))
+
     def handle_event(self, evnt):
         if evnt == event.EVENT_QUIT:
             self.isRunning = False
         elif event.is_movement_event(evnt):
-            self.movePair(evnt)
+            self.move_pair(evnt)
+        elif evnt == event.ROTATE_CLOCKWISE:
+            self.rotate_clockwise()
+        elif evnt == event.ROTATE_COUNTER_CLOCKWISE:
+            self.rotate_counter_clockwise()
 
 
 def render_falling_pair(gameState, gameboard, puyoSprites):

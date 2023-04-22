@@ -3,6 +3,8 @@ INPUT_UP = 1
 INPUT_DOWN = 2
 INPUT_LEFT = 3
 INPUT_RIGHT = 4
+ROTATE_CLOCKWISE = 5
+ROTATE_COUNTER_CLOCKWISE = 6
 
 class EventHandler():
     def __init__(self, pygame):
@@ -20,6 +22,8 @@ class EventHandler():
                 elif event.key == self._pygame.K_DOWN:  return INPUT_DOWN
                 elif event.key == self._pygame.K_LEFT:  return INPUT_LEFT
                 elif event.key == self._pygame.K_RIGHT: return INPUT_RIGHT
+                elif event.key == self._pygame.K_z:     return ROTATE_CLOCKWISE
+                elif event.key == self._pygame.K_x:     return ROTATE_COUNTER_CLOCKWISE
 
 def is_movement_event(event):
     return event in {INPUT_UP, INPUT_DOWN, INPUT_LEFT, INPUT_RIGHT}

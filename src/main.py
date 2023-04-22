@@ -4,6 +4,7 @@ from event import EventHandler
 import gameboard
 from gameboard import Gameboard
 from playfield import Playfield
+import sprites
 from sprites import Sprites
 
 class GameState():
@@ -50,7 +51,9 @@ def gameLoop(pygame, gameState, eventHandler):
         playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
-        gameState.screen.blit(puyoSprites.red_puyo(), gameboard.grid(gameState.falling_pair_location))
+        puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
+        current_puyo_grid = gameboard.grid(gameState.falling_pair_location)
+        gameState.screen.blit(puyoSprites.red_puyos[puyo_frame], current_puyo_grid)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

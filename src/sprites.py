@@ -1,10 +1,27 @@
+ANIMATION_SPEED_IN_MS = 500
+
 class Sprites():
     _spritesheet_filename = "../img/chalkpuyo_sprites.png"
-    _animation_speed_in_ms = 500
     _red_puyo_rects = ((3, 4, 32, 32),
-                    (36, 4, 32, 32),
-                    (68, 2, 32, 32),
-                    (100, 3, 32, 32))
+                       (36, 4, 32, 32),
+                       (68, 2, 32, 32),
+                       (100, 3, 32, 32))
+    _green_puyo_rects = ((3, 35, 32, 32),
+                         (35, 35, 32, 32),
+                         (68, 35, 32, 32),
+                         (100, 36, 32, 32))
+    _blue_puyo_rects = ((4, 68, 32, 32),
+                        (35, 66, 32, 32),
+                        (67, 69, 32, 32),
+                        (100, 67, 32, 32))
+    _yellow_puyo_rects = ((4, 99, 32, 32),
+                          (35, 100, 32, 32),
+                          (68, 99, 32, 32),
+                          (100, 99, 32, 32))
+    _purple_puyo_rects = ((3, 132, 32, 32),
+                          (35, 132, 32, 32),
+                          (69, 131, 32, 32),
+                          (101, 131, 32, 32))
 
     def __init__(self, pygame):
         self.pygame = pygame
@@ -13,7 +30,11 @@ class Sprites():
         except pygame.error as e:
             print(f"Unable to load spritesheet image: {self._spritesheet_filename}")
             raise SystemExit(e)
-        self.redPuyos = self.images_at(self._red_puyo_rects)
+        self.red_puyos = self.images_at(self._red_puyo_rects)
+        self.green_puyos = self.images_at(self._green_puyo_rects)
+        self.blue_puyos = self.images_at(self._blue_puyo_rects)
+        self.yellow_puyos = self.images_at(self._yellow_puyo_rects)
+        self.purple_puyos = self.images_at(self._purple_puyo_rects)
     
     def image_at(self, rectangle, colorkey=None):
         rect = self.pygame.Rect(rectangle)
@@ -27,9 +48,3 @@ class Sprites():
 
     def images_at(self, rectangles, colorkey=None):
         return [self.image_at(rect, colorkey) for rect in rectangles]
-
-    def red_puyo(self):
-        time_in_ms = self.pygame.time.get_ticks()
-        puyo_frame = time_in_ms // self._animation_speed_in_ms % len(self.redPuyos)
-        return self.redPuyos[puyo_frame]
-

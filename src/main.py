@@ -7,6 +7,12 @@ from playfield import Playfield
 import sprites
 from sprites import Sprites
 
+def is_move_legal(x, y, a, b):
+    return min(x, a) >= 0 \
+    and max(x, a) < gameboard.BOARD_TILE_WIDTH \
+    and min(y, b) >= 0 \
+    and max(y, b) < gameboard.BOARD_TILE_HEIGHT 
+
 class GameState():
     def __init__(self, pygame):
         self.screen = pygame.display.set_mode((800, 600))
@@ -18,21 +24,13 @@ class GameState():
     def movePair(self, evnt):
         (x, y), (a, b) = self.falling_pair_location
 
-        if   evnt == event.INPUT_UP:    y -= 1
-        elif evnt == event.INPUT_DOWN:  y += 1
-        elif evnt == event.INPUT_LEFT:  x -= 1
-        elif evnt == event.INPUT_RIGHT: x += 1
+        if   evnt == event.INPUT_UP:    y -= 1; b -= 1
+        elif evnt == event.INPUT_DOWN:  y += 1; b += 1
+        elif evnt == event.INPUT_LEFT:  x -= 1; a -= 1
+        elif evnt == event.INPUT_RIGHT: x += 1; a += 1
 
-        if x < 0: 
-            x = 0
-        elif x >= gameboard.BOARD_TILE_WIDTH: 
-            x = gameboard.BOARD_TILE_WIDTH - 1
-        if y < 0: 
-            y = 0
-        elif y >= gameboard.BOARD_TILE_HEIGHT: 
-            y = gameboard.BOARD_TILE_HEIGHT - 1
-
-        self.falling_pair_location = ((x, y), (a, b))
+        if is_move_legal(x, y, a, b):
+            self.falling_pair_location = ((x, y), (a, b))
 
     def handle_event(self, evnt):
         if evnt == event.EVENT_QUIT:

@@ -48,3 +48,13 @@ class Sprites():
 
     def images_at(self, rectangles, colorkey=None):
         return [self.image_at(rect, colorkey) for rect in rectangles]
+
+    def _char_to_puyo(self, ch):
+        if ch == 'r': return self.red_puyos
+        if ch == 'g': return self.green_puyos
+        if ch == 'b': return self.blue_puyos
+        if ch == 'y': return self.yellow_puyos
+        if ch == 'p': return self.purple_puyos
+
+    def get_image_pair(self, pair_type):
+        return [self._char_to_puyo(p) for p in pair_type]

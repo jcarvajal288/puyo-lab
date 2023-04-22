@@ -12,10 +12,11 @@ class GameState():
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
         self.isRunning = True
-        self.falling_pair_location = (0, 0)
+        self.falling_pair_type = 'ry'
+        self.falling_pair_location = ((2, 0), (2, -1))
 
     def movePair(self, evnt):
-        x, y = self.falling_pair_location
+        (x, y), (a, b) = self.falling_pair_location
 
         if   evnt == event.INPUT_UP:    y -= 1
         elif evnt == event.INPUT_DOWN:  y += 1
@@ -31,7 +32,7 @@ class GameState():
         elif y >= gameboard.BOARD_TILE_HEIGHT: 
             y = gameboard.BOARD_TILE_HEIGHT - 1
 
-        self.falling_pair_location = (x, y)
+        self.falling_pair_location = ((x, y), (a, b))
 
     def handle_event(self, evnt):
         if evnt == event.EVENT_QUIT:
@@ -39,6 +40,13 @@ class GameState():
         elif event.is_movement_event(evnt):
             self.movePair(evnt)
 
+
+def render_falling_pair(gameState, gameboard, puyoSprites):
+    puyos = puyoSprites.get_image_pair(gameState.falling_pair_type)
+    puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
+    pair_grid_locations = [gameboard.grid(x) for x in gameState.falling_pair_location]
+    for puyo, grid in zip(puyos, pair_grid_locations):
+        gameState.screen.blit(puyo[puyo_frame], grid)
 
 def gameLoop(pygame, gameState, eventHandler):
     puyoSprites = Sprites(pygame)
@@ -51,9 +59,7 @@ def gameLoop(pygame, gameState, eventHandler):
         playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
-        puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
-        current_puyo_grid = gameboard.grid(gameState.falling_pair_location)
-        gameState.screen.blit(puyoSprites.red_puyos[puyo_frame], current_puyo_grid)
+        render_falling_pair(gameState, gameboard, puyoSprites)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

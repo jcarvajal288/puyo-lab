@@ -1,6 +1,7 @@
 ANIMATION_SPEED_IN_MS = 500
 
-class Sprites():
+
+class Sprites:
     _spritesheet_filename = "../img/chalkpuyo_sprites.png"
     _red_puyo_rects = ((3, 4, 32, 32),
                        (36, 4, 32, 32),
@@ -35,26 +36,27 @@ class Sprites():
         self.blue_puyos = self.images_at(self._blue_puyo_rects)
         self.yellow_puyos = self.images_at(self._yellow_puyo_rects)
         self.purple_puyos = self.images_at(self._purple_puyo_rects)
-    
-    def image_at(self, rectangle, colorkey=None):
+
+    def image_at(self, rectangle):
         rect = self.pygame.Rect(rectangle)
         image = self.pygame.Surface(rect.size, self.pygame.SRCALPHA)
         image.blit(self._spritesheet, (0, 0), rect)
-        if colorkey is not None:
-            if colorkey == -1:
-                colorkey = image.get_at((0,0))
-            image.set_colorkey(colorkey, pygame.RLEACCEL)
         return image
 
-    def images_at(self, rectangles, colorkey=None):
-        return [self.image_at(rect, colorkey) for rect in rectangles]
+    def images_at(self, rectangles):
+        return [self.image_at(rect) for rect in rectangles]
 
     def _char_to_puyo(self, ch):
-        if ch == 'r': return self.red_puyos
-        if ch == 'g': return self.green_puyos
-        if ch == 'b': return self.blue_puyos
-        if ch == 'y': return self.yellow_puyos
-        if ch == 'p': return self.purple_puyos
+        if ch == 'r':
+            return self.red_puyos
+        if ch == 'g':
+            return self.green_puyos
+        if ch == 'b':
+            return self.blue_puyos
+        if ch == 'y':
+            return self.yellow_puyos
+        if ch == 'p':
+            return self.purple_puyos
 
     def get_image_pair(self, pair_type):
         return [self._char_to_puyo(p) for p in pair_type]

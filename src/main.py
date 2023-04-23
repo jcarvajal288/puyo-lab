@@ -7,13 +7,15 @@ from playfield import Playfield
 import sprites
 from sprites import Sprites
 
+
 def is_move_legal(x, y, a, b):
     return min(x, a) >= 0 \
-    and max(x, a) < gameboard.BOARD_TILE_WIDTH \
-    and min(y, b) >= 0 \
-    and max(y, b) < gameboard.BOARD_TILE_HEIGHT 
+           and max(x, a) < gameboard.BOARD_TILE_WIDTH \
+           and min(y, b) >= 0 \
+           and max(y, b) < gameboard.BOARD_TILE_HEIGHT
 
-class GameState():
+
+class GameState:
     def __init__(self, pygame):
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
@@ -24,10 +26,18 @@ class GameState():
     def move_pair(self, evnt):
         (x, y), (a, b) = self.falling_pair_location
 
-        if   evnt == event.INPUT_UP:    y -= 1; b -= 1
-        elif evnt == event.INPUT_DOWN:  y += 1; b += 1
-        elif evnt == event.INPUT_LEFT:  x -= 1; a -= 1
-        elif evnt == event.INPUT_RIGHT: x += 1; a += 1
+        if evnt == event.INPUT_UP:
+            y -= 1
+            b -= 1
+        elif evnt == event.INPUT_DOWN:
+            y += 1
+            b += 1
+        elif evnt == event.INPUT_LEFT:
+            x -= 1
+            a -= 1
+        elif evnt == event.INPUT_RIGHT:
+            x += 1
+            a += 1
 
         if is_move_legal(x, y, a, b):
             self.falling_pair_location = ((x, y), (a, b))
@@ -35,22 +45,38 @@ class GameState():
     def rotate_clockwise(self):
         (x, y), (a, b) = self.falling_pair_location
         if x == a:
-            if b < y: a += 1; b += 1
-            else: a -= 1; b -= 1        
+            if b < y:
+                a += 1
+                b += 1
+            else:
+                a -= 1
+                b -= 1
         elif y == b:
-            if a < x: b -= 1; a += 1
-            else: b += 1; a -= 1
+            if a < x:
+                b -= 1
+                a += 1
+            else:
+                b += 1
+                a -= 1
         if is_move_legal(x, y, a, b):
             self.falling_pair_location = ((x, y), (a, b))
 
     def rotate_counter_clockwise(self):
         (x, y), (a, b) = self.falling_pair_location
         if x == a:
-            if b < y: a -= 1; b += 1
-            else: a += 1; b -= 1        
+            if b < y:
+                a -= 1
+                b += 1
+            else:
+                a += 1
+                b -= 1
         elif y == b:
-            if a < x: a += 1; b += 1
-            else: a -= 1; b -= 1
+            if a < x:
+                a += 1
+                b += 1
+            else:
+                a -= 1
+                b -= 1
         if is_move_legal(x, y, a, b):
             self.falling_pair_location = ((x, y), (a, b))
 
@@ -72,9 +98,10 @@ def render_falling_pair(gameState, gameboard, puyoSprites):
     for puyo, grid in zip(puyos, pair_grid_locations):
         gameState.screen.blit(puyo[puyo_frame], grid)
 
-def gameLoop(pygame, gameState, eventHandler):
-    puyoSprites = Sprites(pygame)
-    gameboard = Gameboard((100,100))
+
+def game_loop(pygame, gameState, eventHandler):
+    puyo_sprites = Sprites(pygame)
+    gameboard = Gameboard((100, 100))
     playfield = Playfield(pygame, gameboard)
 
     while gameState.isRunning:
@@ -83,18 +110,19 @@ def gameLoop(pygame, gameState, eventHandler):
         playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
-        render_falling_pair(gameState, gameboard, puyoSprites)
+        render_falling_pair(gameState, gameboard, puyo_sprites)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
 
         gameState.clock.tick(60)  # limits FPS to 60
 
+
 def main():
     pygame.init()
-    gameState = GameState(pygame)
-    eventHandler = EventHandler(pygame)
-    gameLoop(pygame, gameState, eventHandler)
+    game_state = GameState(pygame)
+    event_handler = EventHandler(pygame)
+    game_loop(pygame, game_state, event_handler)
     pygame.quit()
 
 

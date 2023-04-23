@@ -1,4 +1,6 @@
 img/ 
 src/venv/
 *.swp
-__pycache__/  
+__pycache__/
+puyo-lab.iml
+.idea

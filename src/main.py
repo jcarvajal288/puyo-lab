@@ -7,9 +7,8 @@ import sprites
 from sprites import Sprites
 
 
-def render_falling_pair(game_state, gameboard, puyo_sprites):
+def render_falling_pair(game_state, gameboard, puyo_sprites, puyo_frame):
     puyos = puyo_sprites.get_image_pair(game_state.falling_pair_type)
-    puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
     pair_grid_locations = [gameboard.grid_to_pixel(x) for x in game_state.falling_pair_location]
     for puyo, grid in zip(puyos, pair_grid_locations):
         game_state.screen.blit(puyo[puyo_frame], grid)
@@ -26,7 +25,9 @@ def game_loop(pygame, gameState, eventHandler):
         playfield.draw(gameState.screen)
 
         # RENDER YOUR GAME HERE
-        render_falling_pair(gameState, gameboard, puyo_sprites)
+        puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
+        gameboard.draw(gameState.screen, puyo_sprites, puyo_frame)
+        render_falling_pair(gameState, gameboard, puyo_sprites, puyo_frame)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

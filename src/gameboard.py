@@ -14,6 +14,16 @@ class Gameboard:
 
     def __init__(self, origin):
         self.origin = origin
+        self.board = [['r' for _ in range(0, BOARD_TILE_WIDTH)] for _ in range(0, BOARD_TILE_HEIGHT)]
+        self.coord_list = [(x, y) for x in range(len(self.board[0]))
+                                  for y in range(len(self.board))]
+
+    def draw(self, screen, sprites, frame):
+        filled_spaces = [(x, y) for (x, y) in self.coord_list if self.board[y][x] is not None]
+        for (x, y) in filled_spaces:
+            puyo_type = sprites.char_to_puyo(self.board[y][x])
+            pixel_coord = self.grid_to_pixel((x, y))
+            screen.blit(puyo_type[frame], pixel_coord)
 
     def grid_to_pixel(self, coord):
         """
@@ -22,3 +32,7 @@ class Gameboard:
         x, y = coord
         origin_x, origin_y = self.origin
         return origin_x + (x * TILE_SIZE), origin_y + (y * TILE_SIZE)
+
+    def add_puyo(self, coord, puyo_type):
+        x, y = coord
+        self.board[x][y] = puyo_type

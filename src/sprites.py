@@ -46,7 +46,7 @@ class Sprites:
     def images_at(self, rectangles):
         return [self.image_at(rect) for rect in rectangles]
 
-    def _char_to_puyo(self, ch):
+    def char_to_puyo(self, ch):
         if ch == 'r':
             return self.red_puyos
         if ch == 'g':
@@ -59,4 +59,4 @@ class Sprites:
             return self.purple_puyos
 
     def get_image_pair(self, pair_type):
-        return [self._char_to_puyo(p) for p in pair_type]
+        return [self.char_to_puyo(p) for p in pair_type]

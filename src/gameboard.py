@@ -15,10 +15,10 @@ class Gameboard:
     def __init__(self, origin):
         self.origin = origin
 
-    def grid(self, coord):
+    def grid_to_pixel(self, coord):
         """
         Converts from grid coordinates (0,1 or 2,4) to pixel coordinates (0,32) or (64, 128)
         """
         x, y = coord
         origin_x, origin_y = self.origin
-        return (origin_x + (x * TILE_SIZE), origin_y + (y * TILE_SIZE))
+        return origin_x + (x * TILE_SIZE), origin_y + (y * TILE_SIZE)

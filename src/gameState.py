@@ -35,13 +35,13 @@ class GameState:
             x += 1
             a += 1
 
-        if evnt == event.INPUT_DOWN and not is_move_legal(x, y, a, b):
+        if evnt == event.INPUT_DOWN and not board.is_move_legal(x, y, a, b):
             self.set_puyos(board)
 
-        if is_move_legal(x, y, a, b):
+        if board.is_move_legal(x, y, a, b):
             self.falling_pair_locations = ((x, y), (a, b))
 
-    def rotate_clockwise(self):
+    def rotate_clockwise(self, board):
         (x, y), (a, b) = self.falling_pair_locations
         if x == a:
             if b < y:
@@ -57,10 +57,10 @@ class GameState:
             else:
                 b += 1
                 a -= 1
-        if is_move_legal(x, y, a, b):
+        if board.is_move_legal(x, y, a, b):
             self.falling_pair_locations = ((x, y), (a, b))
 
-    def rotate_counter_clockwise(self):
+    def rotate_counter_clockwise(self, board):
         (x, y), (a, b) = self.falling_pair_locations
         if x == a:
             if b < y:
@@ -76,7 +76,7 @@ class GameState:
             else:
                 a -= 1
                 b -= 1
-        if is_move_legal(x, y, a, b):
+        if board.is_move_legal(x, y, a, b):
             self.falling_pair_locations = ((x, y), (a, b))
 
     def handle_event(self, evnt, board):
@@ -85,13 +85,7 @@ class GameState:
         elif event.is_movement_event(evnt):
             self.move_pair(evnt, board)
         elif evnt == event.ROTATE_CLOCKWISE:
-            self.rotate_clockwise()
+            self.rotate_clockwise(board)
         elif evnt == event.ROTATE_COUNTER_CLOCKWISE:
-            self.rotate_counter_clockwise()
+            self.rotate_counter_clockwise(board)
 
-
-def is_move_legal(x, y, a, b):
-    return min(x, a) >= 0 \
-           and max(x, a) < gameboard.BOARD_TILE_WIDTH \
-           and min(y, b) >= 0 \
-           and max(y, b) < gameboard.BOARD_TILE_HEIGHT

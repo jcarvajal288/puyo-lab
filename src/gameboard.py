@@ -37,3 +37,11 @@ class Gameboard:
     def add_puyo(self, coord, puyo_type):
         x, y = coord
         self.board[y][x] = puyo_type
+
+    def is_move_legal(self, x, y, a, b):
+        return min(x, a) >= 0 \
+               and max(x, a) < BOARD_TILE_WIDTH \
+               and min(y, b) >= 0 \
+               and max(y, b) < BOARD_TILE_HEIGHT \
+               and self.board[y][x] is None \
+               and self.board[b][a] is None

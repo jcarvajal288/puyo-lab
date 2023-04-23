@@ -36,12 +36,25 @@ class Gameboard:
             return self.board[y + 1][x] is not None
 
     def draw(self, screen, sprites, frame):
+        self._draw_settled_puyos(frame, screen, sprites)
+        self._draw_falling_puyos(frame, screen, sprites)
+        if not self.is_resolving():
+            self._draw_current_pair(screen, sprites, frame)
+
+    def _draw_current_pair(self, screen, sprites, puyo_frame):
+        puyos = sprites.get_image_pair(self.current_pair_type)
+        pair_grid_locations = [self.grid_to_pixel(x) for x in self.current_pair_locations]
+        for puyo, grid in zip(puyos, pair_grid_locations):
+            screen.blit(puyo[puyo_frame], grid)
+
+    def _draw_settled_puyos(self, frame, screen, sprites):
         filled_spaces = [(x, y) for (x, y) in self.coord_list if self.board[y][x] is not None]
         for (x, y) in filled_spaces:
             puyo = sprites.char_to_puyo(self.board[y][x])
             pixel_coord = self.grid_to_pixel((x, y))
             screen.blit(puyo[frame], pixel_coord)
 
+    def _draw_falling_puyos(self, frame, screen, sprites):
         for falling_puyo in self.falling_puyos:
             (puyo_type, pixel_coord) = falling_puyo
             puyo = sprites.char_to_puyo(puyo_type)

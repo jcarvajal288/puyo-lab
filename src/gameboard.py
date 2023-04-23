@@ -26,6 +26,9 @@ class Gameboard:
         self.falling_puyos = []  # pairs of (puyo type, pixel coordinates)
         self.falling_speed = 8
 
+    def is_resolving(self):
+        return len(self.falling_puyos) > 0
+
     def _is_puyo_supported(self, x, y):
         if y + 1 >= BOARD_TILE_HEIGHT:
             return True
@@ -80,6 +83,7 @@ class Gameboard:
         self.add_puyo(coords[1], puyo_types[1])
         self.current_pair_type = random_puyo_pair()
         self.current_pair_locations = STARTING_POINTS
+        self.resolve()
 
     def move_pair(self, evnt):
         (x, y), (a, b) = self.current_pair_locations
@@ -154,7 +158,6 @@ class Gameboard:
     def resolve(self):
         self.detach_hanging_puyos()
         self.update_falling_puyo_locations()
-        return len(self.falling_puyos) == 0
 
 
 def random_puyo_pair():

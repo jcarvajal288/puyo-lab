@@ -20,8 +20,10 @@ def game_loop(pygame, game_state, event_handler):
     playfield = Playfield(pygame, board)
 
     while game_state.isRunning:
-        wait_for_resolution = board.resolve()
-        if wait_for_resolution:
+        board.resolve()
+        if board.is_resolving():
+            pygame.event.clear()
+        else:
             game_state.handle_event(event_handler.get_input(), board)
 
         playfield.draw(game_state.screen)
@@ -29,7 +31,8 @@ def game_loop(pygame, game_state, event_handler):
         # RENDER YOUR GAME HERE
         puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
         board.draw(game_state.screen, puyo_sprites, puyo_frame)
-        render_current_pair(game_state.screen, board, puyo_sprites, puyo_frame)
+        if not board.is_resolving():
+            render_current_pair(game_state.screen, board, puyo_sprites, puyo_frame)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

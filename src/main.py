@@ -9,30 +9,30 @@ from sprites import Sprites
 
 def render_falling_pair(game_state, gameboard, puyo_sprites, puyo_frame):
     puyos = puyo_sprites.get_image_pair(game_state.falling_pair_type)
-    pair_grid_locations = [gameboard.grid_to_pixel(x) for x in game_state.falling_pair_location]
+    pair_grid_locations = [gameboard.grid_to_pixel(x) for x in game_state.falling_pair_locations]
     for puyo, grid in zip(puyos, pair_grid_locations):
         game_state.screen.blit(puyo[puyo_frame], grid)
 
 
-def game_loop(pygame, gameState, eventHandler):
+def game_loop(pygame, game_state, event_handler):
     puyo_sprites = Sprites(pygame)
     gameboard = Gameboard((100, 100))
     playfield = Playfield(pygame, gameboard)
 
-    while gameState.isRunning:
-        gameState.handle_event(eventHandler.get_input())
+    while game_state.isRunning:
+        game_state.handle_event(event_handler.get_input(), gameboard)
 
-        playfield.draw(gameState.screen)
+        playfield.draw(game_state.screen)
 
         # RENDER YOUR GAME HERE
         puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
-        gameboard.draw(gameState.screen, puyo_sprites, puyo_frame)
-        render_falling_pair(gameState, gameboard, puyo_sprites, puyo_frame)
+        gameboard.draw(game_state.screen, puyo_sprites, puyo_frame)
+        render_falling_pair(game_state, gameboard, puyo_sprites, puyo_frame)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
 
-        gameState.clock.tick(60)  # limits FPS to 60
+        game_state.clock.tick(60)  # limits FPS to 60
 
 
 def main():

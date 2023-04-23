@@ -3,6 +3,7 @@ BOARD_TILE_WIDTH = 6
 BOARD_TILE_HEIGHT = 12
 BOARD_PIXEL_WIDTH = BOARD_TILE_WIDTH * TILE_SIZE
 BOARD_PIXEL_HEIGHT = BOARD_TILE_HEIGHT * TILE_SIZE
+STARTING_POINTS = ((2, 0), (2, -1))
 
 
 class Gameboard:
@@ -14,7 +15,7 @@ class Gameboard:
 
     def __init__(self, origin):
         self.origin = origin
-        self.board = [['r' for _ in range(0, BOARD_TILE_WIDTH)] for _ in range(0, BOARD_TILE_HEIGHT)]
+        self.board = [[None for _ in range(0, BOARD_TILE_WIDTH)] for _ in range(0, BOARD_TILE_HEIGHT)]
         self.coord_list = [(x, y) for x in range(len(self.board[0]))
                                   for y in range(len(self.board))]
 
@@ -35,4 +36,4 @@ class Gameboard:
 
     def add_puyo(self, coord, puyo_type):
         x, y = coord
-        self.board[x][y] = puyo_type
+        self.board[y][x] = puyo_type

@@ -40,7 +40,8 @@ class GameState():
         elif y == b:
             if a < x: b -= 1; a += 1
             else: b += 1; a -= 1
-        self.falling_pair_location = ((x, y), (a, b))
+        if is_move_legal(x, y, a, b):
+            self.falling_pair_location = ((x, y), (a, b))
 
     def rotate_counter_clockwise(self):
         (x, y), (a, b) = self.falling_pair_location
@@ -50,7 +51,8 @@ class GameState():
         elif y == b:
             if a < x: a += 1; b += 1
             else: a -= 1; b -= 1
-        self.falling_pair_location = ((x, y), (a, b))
+        if is_move_legal(x, y, a, b):
+            self.falling_pair_location = ((x, y), (a, b))
 
     def handle_event(self, evnt):
         if evnt == event.EVENT_QUIT:

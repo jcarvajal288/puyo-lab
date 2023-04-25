@@ -25,9 +25,11 @@ class Gameboard:
         self.current_pair_locations = STARTING_POINTS
         self.falling_puyos = []  # pairs of (puyo type, pixel coordinates)
         self.falling_speed = 8
+        self.resolving_groups = set()
 
     def is_resolving(self):
-        return len(self.falling_puyos) > 0
+        return len(self.falling_puyos) > 0 \
+               or len(self.resolving_groups) > 0
 
     def _is_puyo_supported(self, x, y):
         if y + 1 >= BOARD_TILE_HEIGHT:
@@ -77,6 +79,9 @@ class Gameboard:
         origin_x, origin_y = self.origin
         return (x - origin_x) // TILE_SIZE, (y - origin_y) // TILE_SIZE
 
+    def get_puyo(self, coord):
+        return self.board[coord[1]][coord[0]]
+
     def add_puyo(self, coord, puyo_type):
         x, y = coord
         self.board[y][x] = puyo_type
@@ -97,6 +102,9 @@ class Gameboard:
         self.current_pair_type = random_puyo_pair()
         self.current_pair_locations = STARTING_POINTS
         self.resolve()
+
+    def remove_puyo(self, coord):
+        self.board[coord[1]][coord[0]] = None
 
     def move_pair(self, evnt):
         (x, y), (a, b) = self.current_pair_locations
@@ -158,19 +166,51 @@ class Gameboard:
         if self.is_move_legal(x, y, a, b):
             self.current_pair_locations = ((x, y), (a, b))
 
-    def detach_hanging_puyos(self):
+    def _detach_hanging_puyos(self):
         puyos_in_board = [(x, y) for (x, y) in self.coord_list if self.board[y][x] is not None]
         for x, y in reversed(puyos_in_board):
             if not self._is_puyo_supported(x, y):
                 self.falling_puyos.append((self.board[y][x], self.grid_to_pixel((x, y))))
-                self.board[y][x] = None
+                self.remove_puyo((x, y))
 
-    def update_falling_puyo_locations(self):
-        self.falling_puyos = [(p, (x, y+self.falling_speed)) for (p, (x, y)) in self.falling_puyos]
+    def _update_falling_puyo_locations(self):
+        self.falling_puyos = [(p, (x, y + self.falling_speed)) for (p, (x, y)) in self.falling_puyos]
+
+    def _get_group_for_coord(self, coord, puyo_type, group):
+        group.add(coord)
+        x, y = coord
+        neighbors = ((x + 1, y), (x, y + 1), (x - 1, y), (x, y - 1))
+        new_group_members = [(x, y) for (x, y) in neighbors if 0 <= x < BOARD_TILE_WIDTH
+                             and 0 <= y < BOARD_TILE_HEIGHT
+                             and self.board[y][x] == puyo_type
+                             and (x, y) not in group]
+        for neighbor in new_group_members:
+            self._get_group_for_coord(neighbor, puyo_type, group)
+        return group
+
+    def _find_groups(self):
+        for coord in self.coord_list:
+            puyo_type = self.get_puyo(coord)
+            if puyo_type is not None \
+                    and coord not in self.resolving_groups:
+                group = self._get_group_for_coord(coord, puyo_type, set())
+                if len(group) >= 4:
+                    self.resolving_groups.update(group)
+
+    def _resolve_groups(self):
+        self._find_groups()
+        if len(self.resolving_groups) > 0:
+            for (x, y) in self.resolving_groups:
+                self.remove_puyo((x, y))
+            self.resolving_groups.clear()
+            self.current_pair_locations = STARTING_POINTS
 
     def resolve(self):
-        self.detach_hanging_puyos()
-        self.update_falling_puyo_locations()
+        if len(self.resolving_groups) == 0:
+            self._detach_hanging_puyos()
+            self._update_falling_puyo_locations()
+        if len(self.falling_puyos) == 0:
+            self._resolve_groups()
 
 
 def random_puyo_pair():

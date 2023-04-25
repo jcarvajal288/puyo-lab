@@ -7,7 +7,7 @@ import sprites
 from sprites import Sprites
 
 
-def game_loop(pygame, game_state, event_handler):
+def game_loop(game_state, event_handler):
     puyo_sprites = Sprites(pygame)
     board = Gameboard((100, 68))
     playfield = Playfield(pygame, board)
@@ -34,7 +34,7 @@ def main():
     pygame.init()
     game_state = GameState(pygame)
     event_handler = EventHandler(pygame)
-    game_loop(pygame, game_state, event_handler)
+    game_loop(game_state, event_handler)
     pygame.quit()
 
 

@@ -180,7 +180,8 @@ class Gameboard:
         group.add(coord)
         x, y = coord
         neighbors = ((x + 1, y), (x, y + 1), (x - 1, y), (x, y - 1))
-        new_group_members = [(x, y) for (x, y) in neighbors if 0 <= x < BOARD_TILE_WIDTH
+        new_group_members = [(x, y) for (x, y) in neighbors
+                             if 0 <= x < BOARD_TILE_WIDTH
                              and 0 <= y < BOARD_TILE_HEIGHT
                              and self.board[y][x] == puyo_type
                              and (x, y) not in group]

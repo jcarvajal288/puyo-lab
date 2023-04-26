@@ -128,6 +128,17 @@ class Gameboard:
         if self.is_move_legal(x, y, a, b):
             self.current_pair_locations = ((x, y), (a, b))
 
+    def quick_drop(self):
+        (x, y), (a, b) = self.current_pair_locations
+        lowest_point = max(y, b)
+        distance_to_drop = -1
+        for i in range(lowest_point, BOARD_TILE_HEIGHT):
+            if self.get_puyo((x, i)) is None and self.get_puyo((a, i)) is None:
+                distance_to_drop += 1
+            else:
+                break
+        self.current_pair_locations = ((x, y + distance_to_drop), (a, b + distance_to_drop))
+
     def rotate_clockwise(self):
         (x, y), (a, b) = self.current_pair_locations
         if x == a:

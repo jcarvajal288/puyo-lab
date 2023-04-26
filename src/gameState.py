@@ -11,7 +11,11 @@ class GameState:
         if evnt == event.EVENT_QUIT:
             self.isRunning = False
         elif event.is_movement_event(evnt):
-            board.move_pair(evnt)
+            if evnt == event.INPUT_UP:
+                board.quick_drop()
+                board.set_puyos()
+            else:
+                board.move_pair(evnt)
         elif evnt == event.ROTATE_CLOCKWISE:
             board.rotate_clockwise()
         elif evnt == event.ROTATE_COUNTER_CLOCKWISE:

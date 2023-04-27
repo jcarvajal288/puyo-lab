@@ -5,6 +5,7 @@ class GameState:
     def __init__(self, pygame):
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
+        self.max_chain = 0
         self.isRunning = True
 
     def handle_event(self, evnt, board):

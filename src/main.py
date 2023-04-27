@@ -20,7 +20,7 @@ def game_loop(game_state, event_handler):
             game_state.handle_event(event_handler.get_input(), board)
 
         # RENDER YOUR GAME HERE
-        playfield.draw(game_state.screen)
+        playfield.draw(game_state.screen, game_state)
         puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
         board.draw(game_state.screen, puyo_sprites, puyo_frame)
 

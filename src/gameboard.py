@@ -37,6 +37,9 @@ class Gameboard:
         else:
             return self.board[y + 1][x] is not None
 
+    def reset(self):
+        self.__init__(self.origin)
+
     def draw(self, screen, sprites, frame):
         self._draw_settled_puyos(frame, screen, sprites)
         self._draw_falling_puyos(frame, screen, sprites)

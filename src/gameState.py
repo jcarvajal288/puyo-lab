@@ -20,3 +20,5 @@ class GameState:
             board.rotate_clockwise()
         elif evnt == event.ROTATE_COUNTER_CLOCKWISE:
             board.rotate_counter_clockwise()
+        elif evnt == event.RESET_GAME:
+            board.reset()

@@ -5,6 +5,7 @@ INPUT_LEFT = 3
 INPUT_RIGHT = 4
 ROTATE_CLOCKWISE = 5
 ROTATE_COUNTER_CLOCKWISE = 6
+RESET_GAME = 7
 
 
 class EventHandler:
@@ -31,6 +32,8 @@ class EventHandler:
                     return ROTATE_CLOCKWISE
                 elif event.key == self._pygame.K_x:
                     return ROTATE_COUNTER_CLOCKWISE
+                elif event.key == self._pygame.K_r:
+                    return RESET_GAME
 
 
 def is_movement_event(event):

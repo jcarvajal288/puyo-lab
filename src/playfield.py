@@ -6,8 +6,9 @@ class Playfield:
     _chalk_font_filename = "../font/VTCAllSkratchedUpOne.ttf"
     _board_border_font_size = gameboard.TILE_SIZE // 2
     _stats_font_size = gameboard.TILE_SIZE
-    _stats_origin = (400, 100)
-    white = (255, 255, 255)
+    _max_chain_origin = (400, 100)
+    _num_moves_origin = (400, 200)
+    white = (240, 240, 240)
 
     def __init__(self, pygame, board):
         self.background_image = pygame.image.load(self._background_image_filename)
@@ -40,4 +41,6 @@ class Playfield:
 
     def _draw_stats(self, screen, game_state):
         max_chain = self.stats_font.render(f'Max Chain: {game_state.max_chain}', True, self.white)
-        screen.blit(max_chain, self._stats_origin)
+        num_moves = self.stats_font.render(f'Number of Moves: {game_state.num_moves}', True, self.white)
+        screen.blit(max_chain, self._max_chain_origin)
+        screen.blit(num_moves, self._num_moves_origin)

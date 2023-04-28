@@ -128,9 +128,11 @@ class Gameboard:
 
         if evnt == event.INPUT_DOWN and not self.is_move_legal(x, y, a, b):
             self.set_puyos()
+            return True
 
         if self.is_move_legal(x, y, a, b):
             self.current_pair_locations = ((x, y), (a, b))
+        return False
 
     def quick_drop(self):
         (x, y), (a, b) = self.current_pair_locations

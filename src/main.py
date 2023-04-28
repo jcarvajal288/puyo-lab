@@ -17,7 +17,9 @@ def game_loop(game_state, event_handler):
         if board.is_resolving():
             pygame.event.clear()
         else:
+            board.num_chains = 0
             game_state.handle_event(event_handler.get_input(), board)
+        game_state.max_chain = max(game_state.max_chain, board.num_chains)
 
         # RENDER YOUR GAME HERE
         playfield.draw(game_state.screen, game_state)

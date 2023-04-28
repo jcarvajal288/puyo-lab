@@ -26,6 +26,7 @@ class Gameboard:
         self.falling_puyos = []  # pairs of (puyo type, pixel coordinates)
         self.falling_speed = 8
         self.resolving_groups = set()
+        self.num_chains = 0
 
     def is_resolving(self):
         return len(self.falling_puyos) > 0 \
@@ -215,17 +216,17 @@ class Gameboard:
     def _resolve_groups(self):
         self._find_groups()
         if len(self.resolving_groups) > 0:
+            self.num_chains += 1
             for (x, y) in self.resolving_groups:
                 self.remove_puyo((x, y))
             self.resolving_groups.clear()
             self.current_pair_locations = STARTING_POINTS
 
     def resolve(self):
-        if len(self.resolving_groups) == 0:
-            self._detach_hanging_puyos()
-            self._update_falling_puyo_locations()
         if len(self.falling_puyos) == 0:
             self._resolve_groups()
+        self._detach_hanging_puyos()
+        self._update_falling_puyo_locations()
 
 
 def random_puyo_pair():

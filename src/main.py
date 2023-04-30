@@ -3,7 +3,7 @@ from event import EventHandler
 from gameState import GameState
 from gameboard import Gameboard
 from playfield import Playfield
-import sprites
+from renderer import Renderer
 from sprites import Sprites
 
 
@@ -11,6 +11,7 @@ def game_loop(game_state, event_handler):
     puyo_sprites = Sprites(pygame)
     board = Gameboard((100, 68))
     playfield = Playfield(pygame, board)
+    renderer = Renderer(pygame)
 
     while game_state.isRunning:
         board.resolve()
@@ -22,12 +23,7 @@ def game_loop(game_state, event_handler):
         game_state.max_chain = max(game_state.max_chain, board.num_chains)
 
         # RENDER YOUR GAME HERE
-        playfield.draw(game_state.screen, game_state)
-        puyo_frame = pygame.time.get_ticks() // sprites.ANIMATION_SPEED_IN_MS % 4
-        board.draw(game_state.screen, puyo_sprites, puyo_frame)
-
-        # flip() the display to put your work on screen
-        pygame.display.flip()
+        renderer.render(puyo_sprites, playfield, board, game_state)
 
         game_state.clock.tick(60)  # limits FPS to 60
 

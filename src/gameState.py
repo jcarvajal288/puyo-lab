@@ -1,10 +1,12 @@
 import event
+from random import choice
 
 
 class GameState:
     def __init__(self, pygame):
         self.screen = pygame.display.set_mode((800, 600))
         self.clock = pygame.time.Clock()
+        self.next_puyo_pair = generate_random_puyo_pair()
         self.max_chain = 0
         self.num_moves = 0
         self.isRunning = True
@@ -32,3 +34,7 @@ class GameState:
             board.rotate_counter_clockwise()
         elif evnt == event.RESET_GAME:
             self.reset(board)
+
+
+def generate_random_puyo_pair():
+    yield choice('rgbyp') + choice('rgbyp')

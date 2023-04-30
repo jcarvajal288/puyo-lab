@@ -6,8 +6,8 @@ class Playfield:
     _chalk_font_filename = "../font/VTCAllSkratchedUpOne.ttf"
     _board_border_font_size = gameboard.TILE_SIZE // 2
     _stats_font_size = gameboard.TILE_SIZE
-    _max_chain_origin = (400, 100)
-    _num_moves_origin = (400, 200)
+    _max_chain_origin = (500, 100)
+    _num_moves_origin = (500, 200)
     white = (240, 240, 240)
 
     def __init__(self, pygame, board):

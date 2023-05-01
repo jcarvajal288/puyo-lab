@@ -1,10 +1,11 @@
 import event
 import gameboard
+from random import choice
 
 
 class PuyoPair:
     def __init__(self):
-        self.colors = gameboard.random_puyo_pair()
+        self.colors = next(generate_random_puyo_colors())
         self.locations = gameboard.STARTING_POINTS
 
     def draw(self, screen, board, puyo_sprites, animation_frame):
@@ -30,7 +31,9 @@ class PuyoPair:
             a += 1
 
         if evnt == event.INPUT_DOWN and not is_move_legal(board, x, y, a, b):
-            board.set_puyos()
+            board.set_puyos(self.colors, self.locations)
+            self.colors = next(generate_random_puyo_colors())
+            self.locations = gameboard.STARTING_POINTS
             return True
 
         if is_move_legal(board, x, y, a, b):
@@ -42,7 +45,7 @@ class PuyoPair:
         lowest_point = max(y, b)
         distance_to_drop = -1
         for i in range(lowest_point, gameboard.BOARD_TILE_HEIGHT):
-            if board.get_puyo((x, i)) is None and board.get_puyo((a, i)) is None:
+            if board.get_grid(x, i) is None and board.get_grid(a, i) is None:
                 distance_to_drop += 1
             else:
                 break
@@ -92,5 +95,9 @@ def is_move_legal(board, x, y, a, b):
            and max(x, a) < gameboard.BOARD_TILE_WIDTH \
            and min(y, b) >= 0 \
            and max(y, b) < gameboard.BOARD_TILE_HEIGHT \
-           and board[y][x] is None \
-           and board[b][a] is None
+           and board.get_grid(x, y) is None \
+           and board.get_grid(a, b) is None
+
+
+def generate_random_puyo_colors():
+    yield choice('rgbyp') + choice('rgbyp')

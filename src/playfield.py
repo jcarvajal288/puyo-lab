@@ -8,7 +8,7 @@ class Playfield:
     _stats_font_size = gameboard.TILE_SIZE
     _max_chain_origin = (500, 100)
     _num_moves_origin = (500, 200)
-    _preview_origin = (300, 200)
+    _preview_origin = (325, 100)
     white = (240, 240, 240)
 
     def __init__(self, pygame, board):
@@ -44,7 +44,7 @@ class Playfield:
     def _draw_preview(self, screen, game_state, puyo_sprites, animation_frame):
         top1 = self._preview_origin
         bottom1 = top1[0], top1[1] + gameboard.TILE_SIZE
-        top2 = bottom1[0], bottom1[1] + gameboard.TILE_SIZE
+        top2 = bottom1[0] + gameboard.TILE_SIZE, bottom1[1] + gameboard.TILE_SIZE
         bottom2 = top2[0], top2[1] + gameboard.TILE_SIZE
         queue_colors = "".join([p.colors for p in game_state.puyo_queue])
         for puyo_color, coord in zip(queue_colors[2:], (top1, bottom1, top2, bottom2)):

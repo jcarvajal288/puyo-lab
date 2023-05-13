@@ -49,12 +49,12 @@ class Gameboard:
 
     def _draw_falling_puyos(self, frame, screen, sprites):
         for falling_puyo in self.falling_puyos:
-            (puyo_type, pixel_coord) = falling_puyo
-            puyo = sprites.char_to_puyo(puyo_type)
+            (puyo_color, pixel_coord) = falling_puyo
+            puyo = sprites.char_to_puyo(puyo_color)
             screen.blit(puyo[frame], pixel_coord)
             x, y = self.pixel_to_grid(pixel_coord)
             if self._is_puyo_supported(x, y):
-                self.board[y][x] = puyo_type
+                self.board[y][x] = puyo_color
                 self.falling_puyos.remove(falling_puyo)
 
     def grid_to_pixel(self, grid):

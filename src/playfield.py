@@ -8,6 +8,7 @@ class Playfield:
     _stats_font_size = gameboard.TILE_SIZE
     _max_chain_origin = (500, 100)
     _num_moves_origin = (500, 200)
+    _preview_origin = (300, 200)
     white = (240, 240, 240)
 
     def __init__(self, pygame, board):
@@ -19,8 +20,9 @@ class Playfield:
         self.horizontal_bar = self.board_border_font.render('---------------------', True, self.white)
         self.vertical_brackets = self.board_border_font.render('|                                       |', True, self.white)
 
-    def draw(self, screen, game_state):
+    def draw(self, screen, game_state, puyo_sprites, animation_frame):
         self._draw_board_border(screen)
+        self._draw_preview(screen, game_state, puyo_sprites, animation_frame)
         self._draw_stats(screen, game_state)
 
     def _draw_board_border(self, screen):
@@ -38,6 +40,13 @@ class Playfield:
         for i in range(1, 31):
             bracket_top_left = (top_left[0], top_left[1] + gameboard.BOARD_TILE_HEIGHT * i - vertical_bar_offset)
             screen.blit(self.vertical_brackets, bracket_top_left)
+
+    def _draw_preview(self, screen, game_state, puyo_sprites, animation_frame):
+        top = self._preview_origin
+        bottom = self._preview_origin[0], self._preview_origin[1] + gameboard.TILE_SIZE
+        for puyo_color, coord in zip(game_state.puyo_queue[1].colors, (top, bottom)):
+            puyo = puyo_sprites.char_to_puyo(puyo_color)
+            screen.blit(puyo[animation_frame], coord)
 
     def _draw_stats(self, screen, game_state):
         max_chain = self.stats_font.render(f'Max Chain: {game_state.max_chain}', True, self.white)

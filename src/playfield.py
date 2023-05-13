@@ -42,9 +42,12 @@ class Playfield:
             screen.blit(self.vertical_brackets, bracket_top_left)
 
     def _draw_preview(self, screen, game_state, puyo_sprites, animation_frame):
-        top = self._preview_origin
-        bottom = self._preview_origin[0], self._preview_origin[1] + gameboard.TILE_SIZE
-        for puyo_color, coord in zip(game_state.puyo_queue[1].colors, (top, bottom)):
+        top1 = self._preview_origin
+        bottom1 = top1[0], top1[1] + gameboard.TILE_SIZE
+        top2 = bottom1[0], bottom1[1] + gameboard.TILE_SIZE
+        bottom2 = top2[0], top2[1] + gameboard.TILE_SIZE
+        queue_colors = "".join([p.colors for p in game_state.puyo_queue])
+        for puyo_color, coord in zip(queue_colors[2:], (top1, bottom1, top2, bottom2)):
             puyo = puyo_sprites.char_to_puyo(puyo_color)
             screen.blit(puyo[animation_frame], coord)
 
